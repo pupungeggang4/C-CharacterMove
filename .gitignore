@@ -51,5 +51,10 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+.DS_Store
+*.*~
+*.swp
+release/
+
 # debug information files
 *.dwo
