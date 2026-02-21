@@ -1,3 +1,4 @@
+
 #include "includes.h"
 #include "playerhandler.h"
 #include "game.h"
@@ -16,10 +17,12 @@ void initGame(Game* game) {
         glfwTerminate();
         return;
     }
-    
-    glfwGetMonitorContentScale(monitor, &xscale, &yscale);
 
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+    glfwGetMonitorContentScale(monitor, &xscale, &yscale);
+    #ifdef __APPLE__
+    xscale = 1.f; yscale = 1.f;
+    #endif
     game->windowWidth = 800 * xscale;
     game->windowHeight = 600 * yscale;
     game->window = glfwCreateWindow(game->windowWidth, game->windowHeight, "GLFW Character Movement", NULL, NULL);
@@ -50,7 +53,7 @@ void initGame(Game* game) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
+    
     int tWidth, tHeight, tChannels;
     unsigned char *imgData = stbi_load("asset/sprite_player.png", &tWidth, &tHeight, &tChannels, 0);
     if (!imgData) {
@@ -104,11 +107,12 @@ void mouseCallback(GLFWwindow* window, int button, int action, int mods) {
     double xpos, ypos;
     int width, height;
     glfwGetCursorPos(window, &xpos, &ypos);
-    glfwGetFramebufferSize(window, &width, &height);
+    glfwGetWindowSize(window, &width, &height);
     float screenX = xpos / width * 8.f - 4.f;
     float screenY = ypos / height * -6.f + 3.f;
 
     game->player.dest.x = screenX;
     game->player.dest.y = screenY;
+    printf("%.1f %.1f\n", screenX, screenY);
     game->player.moving = 1;
 }

@@ -2,7 +2,7 @@
 #include "game.h"
 #include "gamehandler.h"
 
-int main() {
+int main(void) {
     Game game = {0};
     initGame(&game);
     runGame(&game);
